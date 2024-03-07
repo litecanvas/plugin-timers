@@ -16,6 +16,7 @@ import pluginTimers from "@litecanvas/plugin-timers"
 
 litecanvas({
   plugins: [pluginTimers],
+  loop: { init }
 })
 
 function init() {
