@@ -1,4 +1,4 @@
-/*! Timers plugin for litecanvas v0.1.2 by Luiz Bills | MIT Licensed */
+/*! Timers plugin for litecanvas v0.1.3 by Luiz Bills | MIT Licensed */
 window.pluginTimers = plugin
 
 export default function plugin(engine) {
@@ -82,5 +82,3 @@ export default function plugin(engine) {
     },
   }
 }
-
-plugin.priority = 0
