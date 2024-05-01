@@ -26,12 +26,12 @@
       function init() {
         every(1, () => {
           // this function will be called every 1 second
-          console.log("1 second")
+          console.log(`${elapsed()} - 1 second`)
         })
 
         wait(5, () => {
           // this function will be called once after 5 seconds
-          console.log("5 seconds")
+          console.log(`${elapsed()} - 5 seconds`)
         })
 
         let n = 0
@@ -40,13 +40,17 @@
           // this function will be called every 2 seconds
           // but just 5 times
           n++
-          console.log(`repeat ${n}/${max}`)
+          console.log(`${elapsed()} - repeat ${n}/${max}`)
         })
       }
 
       function draw() {
         clear(0)
-        text(10, 10, "elapsed: " + Number(ELAPSED).toFixed(2), 3)
+        print(10, 10, elapsed(), 3)
+      }
+
+      function elapsed() {
+        return "ELAPSED=" + ELAPSED.toFixed(1)
       }
     </script>
   </body>
