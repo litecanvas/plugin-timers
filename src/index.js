@@ -1,7 +1,7 @@
-/*! Timers plugin for litecanvas v0.2.0 by Luiz Bills | MIT Licensed */
+/*! Timers plugin for litecanvas v0.3.0 by Luiz Bills | MIT Licensed */
 window.pluginTimers = plugin
 
-export default function plugin(engine, { on }) {
+export default function plugin(engine) {
   let _timers = []
 
   // timer class
@@ -39,7 +39,7 @@ export default function plugin(engine, { on }) {
   }
 
   // update all timers
-  on("update", _updateAll, true)
+  engine.listen("update", _updateAll, true)
 
   function _updateAll(dt) {
     if (0 === _timers.length) return
