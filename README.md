@@ -15,9 +15,10 @@ import litecanvas from "@litecanvas/litecanvas"
 import pluginTimers from "@litecanvas/plugin-timers"
 
 litecanvas({
-  plugins: [pluginTimers],
-  loop: { init }
+  loop: { init },
 })
+
+use(pluginTimers) // load the plugin
 
 function init() {
   wait(5, () => {
