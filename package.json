@@ -1,6 +1,6 @@
 {
   "name": "@litecanvas/plugin-timers",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Plugin to help manage timers in litecanvas games",
   "author": "Luiz Bills <luizbills@pm.me>",
   "license": "MIT",
@@ -24,6 +24,9 @@
   },
   "devDependencies": {
     "esbuild": "^0.20.1"
+  },
+  "peerDependencies": {
+    "@litecanvas/litecanvas": "*"
   },
   "files": [
     "dist",
