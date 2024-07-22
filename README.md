@@ -11,7 +11,7 @@ Helpers to manage timers in [litecanvas](https://github.com/litecanvas/engine) g
 ## Usage
 
 ```js
-import litecanvas from "@litecanvas/litecanvas"
+import litecanvas from "litecanvas"
 import pluginTimers from "@litecanvas/plugin-timers"
 
 litecanvas({
