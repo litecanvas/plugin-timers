@@ -1,6 +1,6 @@
 {
   "name": "@litecanvas/plugin-timers",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Plugin to help manage timers in litecanvas games",
   "author": "Luiz Bills <luizbills@pm.me>",
   "license": "MIT",
@@ -18,7 +18,7 @@
     "timer"
   ],
   "scripts": {
-    "start": "esbuild src/index.js --bundle --watch --outfile=dist/dist.js --servedir=public",
+    "dev": "esbuild src/index.js --bundle --watch --outfile=dist/dist.js --servedir=.",
     "build": "esbuild src/index.js --bundle --minify --outfile=dist/dist.js",
     "prepare": "npm run build"
   },
