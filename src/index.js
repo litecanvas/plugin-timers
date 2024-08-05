@@ -1,43 +1,54 @@
-/*! Timers plugin for litecanvas v0.3.3 by Luiz Bills | MIT Licensed */
+/*! Timers plugin for litecanvas v0.4.0 by Luiz Bills | MIT Licensed */
 window.pluginTimers = plugin
 
-export default function plugin(engine) {
-  let _timers = []
+let _timers = []
 
-  // timer class
-  class Timer {
-    constructor(seconds, callback, repeat = false) {
-      this.elapsed = 0
-      this.seconds = seconds
-      this.callback = callback
-      this.repeat = true === repeat ? Infinity : ~~repeat
-      this.id = _timers.push(this)
-    }
+// timer class
+export class Timer {
+  constructor(seconds, callback, repeat = false) {
+    this.paused = 0
+    this.elapsed = 0
+    this.seconds = seconds
+    this.callback = callback
+    this.repeat = true === repeat ? Infinity : ~~repeat
+    this.id = _timers.push(this)
+  }
 
-    update(dt) {
-      this.elapsed += dt
-      if (this.elapsed >= this.seconds) {
-        this.callback()
-        this.elapsed -= this.seconds
-        if (this.repeat > 1) {
-          this.repeat--
-        } else {
-          this.cancel()
-        }
+  pause() {
+    this.paused++
+  }
+
+  resume() {
+    this.paused--
+  }
+
+  update(dt) {
+    if (this.paused > 0) return
+
+    this.elapsed += dt
+    if (this.elapsed >= this.seconds) {
+      this.callback()
+      this.elapsed -= this.seconds
+      if (this.repeat > 1) {
+        this.repeat--
+      } else {
+        this.cancel()
       }
-    }
-
-    cancel() {
-      const len = _timers.length
-      if (len > 1 && len !== this.id) {
-        const last = _timers[len - 1]
-        last.id = this.id
-        _timers[last.id - 1] = last
-      }
-      _timers.pop()
     }
   }
 
+  cancel() {
+    const len = _timers.length
+    if (len > 1 && len !== this.id) {
+      const last = _timers[len - 1]
+      last.id = this.id
+      _timers[last.id - 1] = last
+    }
+    _timers.pop()
+  }
+}
+
+export default function plugin(engine) {
   // update all timers
   engine.listen("update", _updateAll, true)
 
@@ -81,6 +92,10 @@ export default function plugin(engine) {
      */
     repeat(n, seconds, callback) {
       return new Timer(seconds, callback, n)
+    },
+
+    timers() {
+      return _timers
     },
   }
 }
