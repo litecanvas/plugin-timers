@@ -35,3 +35,39 @@ function init() {
   })
 }
 ```
+
+### Other features
+
+Cancel a timer:
+
+```js
+const t = wait(5, () => {
+  // ...
+})
+
+t.cancel() // cancel the timer
+```
+
+Pause a timer:
+
+```js
+const t = wait(5, () => {
+  // ...
+})
+
+t.pause() // pause the timer
+
+t.resume() // resume a paused timer
+
+t.paused // true if the timer is paused
+```
+
+Get all active timers:
+
+```js
+const all = timers()
+
+all.forEach((t) => {
+  // ...
+})
+```
