@@ -50,7 +50,7 @@ export class Timer {
 
 export default function plugin(engine) {
   // update all timers
-  engine.listen("update", _updateAll, true)
+  engine.listen("before:update", _updateAll)
 
   function _updateAll(dt) {
     if (0 === _timers.length) return
