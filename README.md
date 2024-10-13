@@ -22,30 +22,25 @@ use(pluginTimers) // load the plugin
 
 function init() {
   wait(5, () => {
-    // this function is called after 5 seconds
-  })
-
-  every(0.1, () => {
-    // this function is called every 0.1 seconds (100 ms)
+    // this function will be executed after 5 seconds
   })
 
   repeat(10, 2, () => {
-    // this function is called every 2 seconds (100 ms)
-    // but just 10 times
+    // this function will be executed 10 times every 2 seconds
   })
 }
 ```
 
 ### Other features
 
-Cancel a timer:
+Stop a timer:
 
 ```js
 const t = wait(5, () => {
   // ...
 })
 
-t.cancel() // cancel the timer
+t.stop() // cancel the timer
 ```
 
 Pause a timer:
@@ -59,15 +54,31 @@ t.pause() // pause the timer
 
 t.resume() // resume a paused timer
 
-t.paused // true if the timer is paused
+t.running // true if the timer is not paused
+```
+
+Get/set the remaining time:
+
+```js
+const t = wait(5, () => {
+  // ...
+})
+
+t.remaining += 10 // add 10 seconds
 ```
 
 Get all active timers:
 
 ```js
-const all = timers()
+...
+litecanvas()
 
-all.forEach((t) => {
+use(pluginTimers, {
+  exposeTimers: true // enable that settings
+})
+
+// now you can use the TIMERS variable
+TIMERS.forEach((t) => {
   // ...
 })
 ```

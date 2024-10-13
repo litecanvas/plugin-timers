@@ -19,34 +19,51 @@
     <script src="https://unpkg.com/litecanvas/dist/dist.js"></script>
     <script src="../dist/dist.js"></script>
     <script>
+      let thirdTimer
+
       litecanvas()
 
-      use(pluginTimers) // load the plugin
+      // load the plugin
+      use(pluginTimers, {
+        exposeTimers: true,
+      })
 
       function init() {
-        every(1, () => {
-          // this function will be called every 1 second
-          console.log(`${elapsed()} - 1 second`)
-        })
-
         wait(5, () => {
           // this function will be called once after 5 seconds
-          console.log(`${elapsed()} - 5 seconds`)
+          console.log(`1st timer - 5 seconds`)
+          console.log(`1st timer - END`)
         })
 
-        let n = 0
-        let max = 5
-        repeat(max, 2, () => {
-          // this function will be called every 2 seconds
-          // but just 5 times
-          n++
-          console.log(`${elapsed()} - repeat ${n}/${max}`)
+        let x = 0
+        repeat(5, 2, () => {
+          // this function will be called 5 times every 2 seconds
+          x++
+          console.log(`2nd timer - repeated ${x}/${5}`)
+          if (x === 5) {
+            console.log(`2nd timer - END`)
+          }
         })
+
+        // wait() and repeat() returns a Timer instance
+        thirdTimer = repeat(Infinity, 1, () => {
+          // this function will be called indefinitely every 1 second
+          console.log(`3rd timer - 1 second`)
+        })
+      }
+
+      function update(dt) {
+        // press ESCAPE to stop the third timer
+        if (thirdTimer.running && iskeydown("escape")) {
+          thirdTimer.stop()
+          console.log(`3rd timer - END`)
+        }
       }
 
       function draw() {
         cls(0)
         text(10, 10, elapsed(), 3)
+        text(10, 50, "Open the browser console")
       }
 
       function elapsed() {

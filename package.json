@@ -1,6 +1,6 @@
 {
   "name": "@litecanvas/plugin-timers",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Plugin to help manage timers in litecanvas games",
   "author": "Luiz Bills <luizbills@pm.me>",
   "license": "MIT",
