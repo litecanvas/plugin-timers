@@ -1,64 +1,69 @@
-/*! Timers plugin for litecanvas by Luiz Bills | MIT Licensed */
 import "litecanvas"
-
-window.pluginTimers = plugin
 
 const INF = Infinity
 
 // timer class
-export class Timer {
+class Timer {
   remaining = 0
   repeat = 0
+  duration = 0
 
   /**
-   *
    * @param {LitecanvasInstance} engine
    * @param {number} duration in seconds
    * @param {() => void} callback a function to be called when this timer finishes
    */
   constructor(engine, duration, callback) {
-    this._duration = duration
     this._callback = callback
     this._e = engine
+    this.duration = duration
     this.start()
   }
 
-  start(seconds = null, repeat = false) {
-    this._pause = 0
-    this.repeat = Number(repeat) || 0
-    this.remaining = seconds || this._duration
+  start(repeat = 0) {
+    this._p = 0 // unpause
+    this.repeat = repeat // maybe redefine the repeat
+    this.remaining = this.duration // restart the duration
     this._e.emit("timer-started", this)
+    return this
   }
 
   stop(finished = false) {
-    this._pause = INF
+    this._p = INF
     if (finished) {
       this._callback()
     }
     this._e.emit("timer-stopped", this, finished)
+    return this
   }
 
   get running() {
-    return this._pause === 0 && this.remaining > 0
+    return this._p === 0 && this.remaining > 0
   }
 
   pause() {
-    this._pause++
+    this._p++
+    return this
   }
 
   resume() {
-    this._pause--
+    this._p--
+    return this
   }
 
+  /**
+   * @param {number} dt
+   */
   update(dt) {
-    if (this._pause > 0) return
+    if (this._p > 0) return
 
     this.remaining -= dt
+
     if (this.remaining <= 0) {
       this._callback()
       if (this.repeat > 1) {
         this.repeat--
-        this.remaining += this._duration
+        this.remaining += this.duration
       } else {
         this.stop()
       }
@@ -73,36 +78,64 @@ export class Timer {
  * @returns {*}
  */
 export default function plugin(engine, _, config) {
-  // list of active timers
+  /**
+   * @type {Timer[]} list of active timers
+   */
   let _timers = []
 
-  // update all timers
-  engine.listen("before:update", (dt) => {
-    if (0 === _timers.length) return
-    for (const timer of _timers) {
-      timer.update(dt)
+  // update all active timers
+  engine.listen(
+    "before:update",
+    /**
+     * @param {number} dt
+     */
+    (dt) => {
+      for (let i = 0; i < _timers.length; i++) {
+        _timers[i].update(dt)
+      }
     }
-  })
+  )
 
-  engine.listen("timer-started", (timer) => {
-    timer._index = _timers.push(timer)
-  })
-
-  engine.listen("timer-stopped", (timer) => {
-    const len = _timers.length
-    if (len > 1 && len !== timer._index) {
-      const last = _timers[len - 1]
-      last._index = timer._index
-      _timers[last._index - 1] = last
+  engine.listen(
+    "before:timer-started",
+    /**
+     * @param {Timer} timer
+     */
+    (timer) => {
+      timer.__i = _timers.push(timer)
     }
-    _timers.pop()
-  })
+  )
+
+  engine.listen(
+    "after:timer-stopped",
+    /**
+     * @param {Timer} timer
+     */
+    (timer) => {
+      // abort if this timer was restarted
+      if (timer.running) return
+
+      const len = _timers.length
+      if (len > 1 && len !== timer.__i) {
+        const last = _timers[len - 1]
+        last.__i = timer.__i
+        _timers[last.__i - 1] = last
+      }
+
+      _timers.pop()
+    }
+  )
 
   if (config.exposeTimers) {
     engine.setvar("TIMERS", _timers)
   }
 
   return {
+    /**
+     * the Timer class
+     */
+    Timer,
+
     /**
      * Wait X seconds and call the callback
      *
