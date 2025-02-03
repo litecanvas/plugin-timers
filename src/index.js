@@ -1,7 +1,5 @@
 import "litecanvas"
 
-const INF = Infinity
-
 // timer class
 class Timer {
   remaining = 0
@@ -14,7 +12,7 @@ class Timer {
    * @param {() => void} callback a function to be called when this timer finishes
    */
   constructor(engine, duration, callback) {
-    this._callback = callback
+    this._cb = callback
     this._e = engine
     this.duration = duration
     this.start()
@@ -29,9 +27,9 @@ class Timer {
   }
 
   stop(finished = false) {
-    this._p = INF
+    this._p = Infinity
     if (finished) {
-      this._callback()
+      this._cb()
     }
     this._e.emit("timer-stopped", this, finished)
     return this
@@ -60,7 +58,7 @@ class Timer {
     this.remaining -= dt
 
     if (this.remaining <= 0) {
-      this._callback()
+      this._cb()
       if (this.repeat > 1) {
         this.repeat--
         this.remaining += this.duration
@@ -159,6 +157,17 @@ export default function plugin(engine, _, config) {
       const t = new Timer(engine, seconds, callback)
       t.repeat = n
       return t
+    },
+
+    /**
+     * Repeat the callback every X seconds
+     *
+     * @param {number} seconds time in seconds
+     * @param {function} callback
+     * @return {Timer} this timer instance
+     */
+    loop(seconds, callback) {
+      return this.repeat(Infinity, seconds, callback)
     },
   }
 }

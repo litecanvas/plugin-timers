@@ -31,7 +31,7 @@
       function init() {
         wait(5, () => {
           // this function will be called once after 5 seconds
-          console.log(`1st timer - 5 seconds`)
+          console.log(`1st timer (wait) - 5 seconds`)
           console.log(`1st timer - END`)
         })
 
@@ -39,16 +39,15 @@
         repeat(5, 2, () => {
           // this function will be called 5 times every 2 seconds
           x++
-          console.log(`2nd timer - repeated ${x}/${5}`)
+          console.log(`2nd timer (repeat) - ${x}/${5}`)
           if (x === 5) {
             console.log(`2nd timer - END`)
           }
         })
 
-        // wait() and repeat() returns a Timer instance
-        thirdTimer = repeat(Infinity, 1, () => {
+        thirdTimer = loop(1, () => {
           // this function will be called indefinitely every 1 second
-          console.log(`3rd timer - 1 second`)
+          console.log(`3rd timer (loop) - 1 second`)
         })
       }
 

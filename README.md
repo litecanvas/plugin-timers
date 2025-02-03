@@ -25,6 +25,10 @@ function init() {
     // this function will be executed after 5 seconds
   })
 
+  loop(2, () => {
+    // this function will be executed every 2 seconds
+  })
+
   repeat(10, 2, () => {
     // this function will be executed 10 times every 2 seconds
   })
@@ -32,6 +36,8 @@ function init() {
 ```
 
 ### Other features
+
+> Available for any kind of timer
 
 Stop a timer:
 
