@@ -30,7 +30,7 @@ function init() {
   })
 
   repeat(10, 2, () => {
-    // this function will be executed 10 times every 2 seconds
+    // this function will be executed only 10 times every 2 seconds
   })
 }
 ```
