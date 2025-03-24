@@ -61,7 +61,8 @@ class Timer {
       this._cb()
       if (this.repeat > 1) {
         this.repeat--
-        this.remaining += this.duration
+        const multiplier = Math.ceil(this.remaining / -this.duration)
+        this.remaining += multiplier * this.duration
       } else {
         this.stop()
       }
@@ -75,7 +76,7 @@ class Timer {
  * @para {*} config
  * @returns {*}
  */
-export default function plugin(engine, _, config) {
+export default function plugin(engine, _, config = {}) {
   /**
    * @type {Timer[]} list of active timers
    */
@@ -91,7 +92,7 @@ export default function plugin(engine, _, config) {
       for (let i = 0; i < _timers.length; i++) {
         _timers[i].update(dt)
       }
-    }
+    },
   )
 
   engine.listen(
@@ -101,7 +102,7 @@ export default function plugin(engine, _, config) {
      */
     (timer) => {
       timer.__i = _timers.push(timer)
-    }
+    },
   )
 
   engine.listen(
@@ -121,7 +122,7 @@ export default function plugin(engine, _, config) {
       }
 
       _timers.pop()
-    }
+    },
   )
 
   if (config.exposeTimers) {
