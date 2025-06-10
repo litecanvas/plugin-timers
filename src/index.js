@@ -72,11 +72,10 @@ class Timer {
 
 /**
  * @param {LitecanvasInstance} engine
- * @param {LitecanvasPluginHelpers} _
  * @para {*} config
  * @returns {*}
  */
-export default function plugin(engine, _, config = {}) {
+export default function plugin(engine, config = {}) {
   /**
    * @type {Timer[]} list of active timers
    */
@@ -92,7 +91,7 @@ export default function plugin(engine, _, config = {}) {
       for (let i = 0; i < _timers.length; i++) {
         _timers[i].update(dt)
       }
-    },
+    }
   )
 
   engine.listen(
@@ -102,7 +101,7 @@ export default function plugin(engine, _, config = {}) {
      */
     (timer) => {
       timer.__i = _timers.push(timer)
-    },
+    }
   )
 
   engine.listen(
@@ -122,11 +121,11 @@ export default function plugin(engine, _, config = {}) {
       }
 
       _timers.pop()
-    },
+    }
   )
 
   if (config.exposeTimers) {
-    engine.setvar("TIMERS", _timers)
+    engine.def("TIMERS", _timers)
   }
 
   return {
