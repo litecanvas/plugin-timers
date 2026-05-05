@@ -23,7 +23,7 @@
     "prepare": "npm run build"
   },
   "devDependencies": {
-    "esbuild": "^0.25.5"
+    "esbuild": "^0.28.0"
   },
   "peerDependencies": {
     "litecanvas": "latest"
